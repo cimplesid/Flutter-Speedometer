@@ -16,7 +16,6 @@ class Speedometer extends StatefulWidget {
       this.meterColor = Colors.lightGreenAccent,
       this.warningColor = Colors.redAccent,
       this.kimColor = Colors.white,
-      this.displayNumericStyle,
       this.displayText = '',
       this.displayTextStyle})
       : super(key: key);
@@ -29,7 +28,6 @@ class Speedometer extends StatefulWidget {
   final Color meterColor;
   final Color warningColor;
   final Color kimColor;
-  final TextStyle displayNumericStyle;
   final String displayText;
   final TextStyle displayTextStyle;
   @override
@@ -67,119 +65,94 @@ class _SpeedometerState extends State<Speedometer> {
                   (_maxValue - _minValue)) +
               startAngle2;
     }
-    return Container(
-      color: widget.backgroundColor,
-      child: Center(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Container(
-            width: _size,
-            height: _size,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(_size * 0.075),
-                  child: Stack(children: <Widget>[
-                    Container(
-                      alignment: Alignment.center,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: _size,
-                        height: _size,
-                        decoration: new BoxDecoration(
-                          color: widget.backgroundColor,
-                          boxShadow: [
-                            new BoxShadow(
-                                color: widget.kimColor,
-                                blurRadius: 8.0,
-                                spreadRadius: 4.0)
-                          ],
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    CustomPaint(
-                      size: Size(_size, _size),
-                      painter: ArcPainter(
-                          startAngle: 9,
-                          sweepAngle: 18,
-                          color: widget.warningColor),
-                    ),
-                    CustomPaint(
-                      size: Size(_size, _size),
-                      painter: ArcPainter(
-                          startAngle: 9,
-                          sweepAngle: _warningAngle,
-                          color: widget.meterColor),
-                    ),
-                  ]),
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: ClipPath(
-                    clipper: TriangleClipper(),
-                    child: Container(
-                      width: _size,
-                      height: _size * 0.5,
-                      color: widget.backgroundColor,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: _size * 0.1,
-                    height: _size * 0.1,
+    return Center(
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Container(
+          width: _size,
+          height: _size,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(_size * 0.075),
+                child: Stack(children: <Widget>[
+                  Container(
                     alignment: Alignment.center,
-                    decoration: new BoxDecoration(
-                      color: widget.kimColor,
-                      boxShadow: [
-                        new BoxShadow(
-                            color: widget.meterColor,
-                            blurRadius: 10.0,
-                            spreadRadius: 5.0)
-                      ],
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Transform.rotate(
-                    angle: math.pi / 12 * _kimAngle,
-                    child: ClipPath(
-                      clipper: KimClipper(),
-                      child: Container(
-                        width: _size * 0.9,
-                        height: _size * 0.9,
-                        color: widget.kimColor,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: _size,
+                      height: _size,
+                      decoration:  BoxDecoration(
+                        color: widget.backgroundColor,
+                        boxShadow: [
+                           BoxShadow(
+                              color: widget.kimColor,
+                              blurRadius: 8.0,
+                              spreadRadius: 4.0)
+                        ],
+                        shape: BoxShape.circle,
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  CustomPaint(
+                    size: Size(_size, _size),
+                    painter: ArcPainter(
+                        startAngle: 9,
+                        sweepAngle: 18,
+                        color: widget.warningColor),
+                  ),
+                  CustomPaint(
+                    size: Size(_size, _size),
+                    painter: ArcPainter(
+                        startAngle: 9,
+                        sweepAngle: _warningAngle,
+                        color: widget.meterColor),
+                  ),
+                  Positioned(
                     child: Text(
                       widget.displayText,
                       style: widget.displayTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    bottom: 7,
+                    left: _size / 4,
+                  )
+                ]),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Container(
+                  width: _size * 0.1,
+                  height: _size * 0.1,
+                  alignment: Alignment.center,
+                  decoration:  BoxDecoration(
+                    color: widget.kimColor,
+                    boxShadow: [
+                       BoxShadow(
+                          color: widget.meterColor,
+                          blurRadius: 10.0,
+                          spreadRadius: 5.0)
+                    ],
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Transform.rotate(
+                  angle: math.pi / 12 * _kimAngle,
+                  child: ClipPath(
+                    clipper: KimClipper(),
+                    child: Container(
+                      width: _size * 0.9,
+                      height: _size * 0.9,
+                      color: widget.kimColor,
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, _size * 0.1),
-                    child: Text(
-                      widget.currentValue.toString(),
-                      style: widget.displayNumericStyle,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
